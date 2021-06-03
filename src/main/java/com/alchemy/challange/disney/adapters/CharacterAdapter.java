@@ -1,5 +1,6 @@
 package com.alchemy.challange.disney.adapters;
 
+import com.alchemy.challange.disney.models.CharactersModel;
 import lombok.Data;
 
 @Data
@@ -11,5 +12,9 @@ public class CharacterAdapter {
     public CharacterAdapter(String name, String image) {
         this.name = name;
         this.image = image;
+    }
+
+    public static CharacterAdapter adaptCharacter(CharactersModel character){
+        return new CharacterAdapter(character.getName(),character.getImage());
     }
 }

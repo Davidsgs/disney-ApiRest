@@ -17,7 +17,7 @@ public class CharactersService {
 
     public ArrayList<CharacterAdapter> getCharacters(){
         var charactersModel = (ArrayList<CharactersModel>) charactersRepository.findAll();
-        return (ArrayList<CharacterAdapter>) charactersModel.stream().map(x -> x.toAdapter()).collect(Collectors.toList());
+        return (ArrayList<CharacterAdapter>) charactersModel.stream().map(CharacterAdapter::adaptCharacter).collect(Collectors.toList());
     }
 
     public CharactersModel saveCharacter(CharactersModel character){

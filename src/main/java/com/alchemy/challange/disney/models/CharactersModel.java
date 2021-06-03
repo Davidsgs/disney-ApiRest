@@ -23,10 +23,6 @@ public class CharactersModel {
     private int weight;
     private String history;
 
-    public CharacterAdapter toAdapter(){
-        return new CharacterAdapter(this.getName(), this.getImage());
-    }
-
     @ManyToMany(targetEntity = MovieOrSerieModel.class, mappedBy = "associatedCharacters", cascade = {CascadeType.PERSIST, CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH})
     @JsonIgnoreProperties({"associatedCharacters"})
     @EqualsAndHashCode.Exclude

@@ -1,8 +1,6 @@
 package com.alchemy.challange.disney.repositories;
 
 import com.alchemy.challange.disney.models.CharactersModel;
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.Filter;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
