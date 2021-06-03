@@ -24,13 +24,10 @@ public class CharactersService {
         return charactersRepository.save(character);
     }
 
-    public Optional<CharactersModel> findById(Long id){
+    public Optional<CharactersModel> findById(Long id) {
         return charactersRepository.findById(id);
     }
 
-    public ArrayList<CharactersModel> findByName(String name){
-        return charactersRepository.findByName(name);
-    }
 
     public boolean deleteById(Long id){
         try{
@@ -39,6 +36,20 @@ public class CharactersService {
         }catch (Exception e){
             return false;
         }
+    }
+
+    //Punto 6
+
+    public ArrayList<CharactersModel> findByAge(Integer age){
+        return charactersRepository.findByAge(age);
+    }
+
+    public ArrayList<CharactersModel> findByName(String name){
+        return charactersRepository.findByName(name);
+    }
+
+    public ArrayList<CharactersModel> findByMovie(Integer idMovie){
+        return charactersRepository.findByMovieId(idMovie);
     }
 
 }

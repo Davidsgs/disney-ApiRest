@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
 @Data
@@ -23,12 +24,11 @@ public class CharactersModel {
     private String history;
 
     public CharacterAdapter toAdapter(){
-        var aux = new CharacterAdapter(this.getName(), this.getImage());
-        return aux;
+        return new CharacterAdapter(this.getName(), this.getImage());
     }
 
     @ManyToMany(targetEntity = MovieOrSerieModel.class, mappedBy = "associatedCharacters", cascade = {CascadeType.PERSIST, CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH})
     @JsonIgnoreProperties({"associatedCharacters"})
     @EqualsAndHashCode.Exclude
-    private Set<MovieOrSerieModel> associatedMoviesOrSeries;
+    private Set<MovieOrSerieModel> associatedMovies = new HashSet<MovieOrSerieModel>();
 }

@@ -59,7 +59,7 @@ public class MovieOrSerieService {
 
     public Boolean removeMovieOrSerieById(Long movieId) {
         var movieAux = movieOrSerieRepository.findById(movieId);
-        var bool = movieAux != null && movieAux.isPresent();
+        var bool = movieAux.isPresent();
         if(bool){
             movieOrSerieRepository.deleteById(movieId);
         }

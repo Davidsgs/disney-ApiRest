@@ -1,10 +1,8 @@
 package com.alchemy.challange.disney.models;
-
 import com.alchemy.challange.disney.adapters.MovieOrSerieAdapter;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-
 import javax.persistence.*;
 import java.util.Calendar;
 import java.util.HashSet;
@@ -29,13 +27,13 @@ public class MovieOrSerieModel {
 
     @ManyToMany(targetEntity = CharactersModel.class, cascade = {CascadeType.PERSIST, CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH})
     @JoinTable(name = "movies_characters", joinColumns = @JoinColumn(name = "movie_or_serie_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "characters_id", referencedColumnName = "id"))
-    @JsonIgnoreProperties({"associatedMoviesOrSeries"})
+    @JsonIgnoreProperties({"associatedMovies"})
     @EqualsAndHashCode.Exclude
-    private Set<CharactersModel> associatedCharacters = new HashSet<CharactersModel>();
+    private Set<CharactersModel> associatedCharacters = new HashSet<>();
 
-    @ManyToOne
+    @ManyToOne(targetEntity = GenreModel.class, cascade = {CascadeType.PERSIST, CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH})
     @JoinColumn(name = "genre_id")
-    @JsonIgnoreProperties("associatedMoviesOrSeries")
-    private GenderModel genre;
+    @JsonIgnoreProperties("associatedMovies")
+    private GenreModel genre;
 
 }
