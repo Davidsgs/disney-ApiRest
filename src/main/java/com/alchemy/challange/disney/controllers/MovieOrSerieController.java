@@ -1,11 +1,14 @@
 package com.alchemy.challange.disney.controllers;
 
 import com.alchemy.challange.disney.adapters.MovieOrSerieAdapter;
+import com.alchemy.challange.disney.models.CharactersModel;
 import com.alchemy.challange.disney.models.MovieOrSerieModel;
 import com.alchemy.challange.disney.services.MovieOrSerieService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -16,7 +19,7 @@ public class MovieOrSerieController {
     public MovieOrSerieService movieOrSerieService;
 
     @RequestMapping(value = "", method = RequestMethod.GET)
-    public List<MovieOrSerieAdapter> getMoviesOrSeries() {
+    public ArrayList<MovieOrSerieAdapter> getMoviesOrSeries() {
         return movieOrSerieService.getMoviesOrSeries();
     }
 
@@ -38,6 +41,23 @@ public class MovieOrSerieController {
     @DeleteMapping(value = "/{movie_or_serie_id}")
     public Boolean removeMovieOrSerieById(@PathVariable(name = "movie_or_serie_id") Long movieId) {
         return movieOrSerieService.removeMovieOrSerieById(movieId);
+    }
+
+    //punto 10
+
+    @RequestMapping(value = "", method = RequestMethod.GET, params = "title")
+    public ArrayList<MovieOrSerieModel> findMovieByTitle(String title){
+        return movieOrSerieService.findByTitle(title);
+    }
+
+    @RequestMapping(value = "", method = RequestMethod.GET, params = "genre")
+    public ArrayList<MovieOrSerieModel> findMovieByGenre(@RequestParam("genre") Long idGenre){
+        return movieOrSerieService.findByGenre(idGenre);
+    }
+
+    @RequestMapping(value = "", method = RequestMethod.GET, params = "order")
+    public ArrayList<MovieOrSerieModel> orderByAscOrDesc(String order){
+        return movieOrSerieService.orderByAscOrDesc(order);
     }
 
 
