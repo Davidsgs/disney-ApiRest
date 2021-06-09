@@ -5,7 +5,7 @@ Mi solución al Challenge Backend de Alkemy utilizando Java Spring Boot para el 
 Correo: davidsamuelgarciasanchez@gmail.com<br />
 [Discord](https://discord.com): David G.#8316
 
-## 📖 Documentacíon: 📚
+## 📖 Documentación: 📚
 Todos los endspoints fueron [documentados](src/main/resources/documentation/disneyAPIEndPoints.postman_collection.json) utilizando [Postman](https://www.postman.com).
 
 <br />
