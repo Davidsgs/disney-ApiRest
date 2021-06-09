@@ -20,7 +20,7 @@ public class CharactersModel {
     private String name;
     private String image;
     private int age;
-    private int weight;
+    private double weight;
     private String history;
 
     @ManyToMany(targetEntity = MovieOrSerieModel.class, mappedBy = "associatedCharacters", cascade = {CascadeType.PERSIST, CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH})

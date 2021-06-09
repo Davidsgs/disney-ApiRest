@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/characters")
@@ -21,12 +20,17 @@ public class CharactersController {
     }
 
     @PostMapping()
-    public CharactersModel saveCharacter(@RequestBody CharactersModel character){
-        return this.charactersService.saveCharacter(character);
+    public CharactersModel createCharacter(@RequestBody CharactersModel character){
+        return this.charactersService.createCharacter(character);
+    }
+
+    @PutMapping()
+    public CharactersModel updateCharacter(@RequestBody CharactersModel character){
+        return charactersService.updateCharacter(character);
     }
 
     @GetMapping(path = "/{id}")
-    public Optional<CharactersModel> findCharacterById(@PathVariable("id") Long id){
+    public CharactersModel findCharacterById(@PathVariable("id") Long id){
         return this.charactersService.findById(id);
     }
 
@@ -34,27 +38,32 @@ public class CharactersController {
     public String deleteById(@PathVariable("id") Long id){
         boolean ok = this.charactersService.deleteById(id);
         if(ok){
-            return "Se eliminó el usuario con id " + id;
+            return "Has been deleted the character with id " + id;
         }else{
-            return "No se pudo eliminar el usuario con id " + id;
+            return "Hasn't been deleted the character with id " + id;
         }
     }
 
     //punto 6
 
     @RequestMapping(method = RequestMethod.GET, params = "name")
-    public ArrayList<CharactersModel> findCharacterByName(@RequestParam(value = "name") String name){
+    public CharactersModel findCharacterByName(@RequestParam(value = "name") String name){
         return this.charactersService.findByName(name);
     }
 
     @RequestMapping(method = RequestMethod.GET, params = "age")
     public ArrayList<CharactersModel> findCharacterByName(@RequestParam(value = "age") Integer age){
-        return this.charactersService.findByAge(age);
+        return this.charactersService.filterByAge(age);
     }
 
     @RequestMapping(method = RequestMethod.GET, params = "movies")
-    public ArrayList<CharactersModel> findCharacterByMovie(@RequestParam(value = "movies") Integer movie){
-        return this.charactersService.findByMovie(movie);
+    public ArrayList<CharactersModel> findCharacterByMovie(@RequestParam(value = "movies") Long idMovie){
+        return this.charactersService.filterByMovie(idMovie);
+    }
+
+    @RequestMapping(method = RequestMethod.GET, params = "weight")
+    public ArrayList<CharactersModel> findByWeight(@RequestParam(value = "weight") Double weight){
+        return charactersService.filterByWeight(weight);
     }
 
 }
