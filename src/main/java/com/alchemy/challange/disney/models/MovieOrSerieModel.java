@@ -19,11 +19,8 @@ public class MovieOrSerieModel {
     private Long id;
     private String image;
     private String title;
+    private int score;
     private Calendar date;
-
-    public MovieOrSerieAdapter toMovieAdapter(){
-        return new MovieOrSerieAdapter(this.getImage(),this.getTitle(),this.getDate());
-    }
 
     @ManyToMany(targetEntity = CharactersModel.class, cascade = {CascadeType.PERSIST, CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH})
     @JoinTable(name = "movies_characters", joinColumns = @JoinColumn(name = "movie_or_serie_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "characters_id", referencedColumnName = "id"))

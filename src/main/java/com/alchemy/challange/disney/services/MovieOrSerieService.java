@@ -5,14 +5,19 @@ import com.alchemy.challange.disney.repositories.MovieOrSerieRepository;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import javax.transaction.Transactional;
 import java.util.ArrayList;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
 public class MovieOrSerieService {
     @Autowired
     MovieOrSerieRepository movieOrSerieRepository;
+
+    public ArrayList<MovieOrSerieModel> findAll(){
+        return (ArrayList<MovieOrSerieModel>) movieOrSerieRepository.findAll();
+    }
 
     public ArrayList<MovieOrSerieAdapter> getMoviesOrSeries(){
         var movieOrSerieModel = (ArrayList<MovieOrSerieModel>) movieOrSerieRepository.findAll();
@@ -23,25 +28,27 @@ public class MovieOrSerieService {
     }
 
     public MovieOrSerieModel getMovieOrSerieById(Long movieId){
-        Optional<MovieOrSerieModel> movie = movieOrSerieRepository.findById(movieId);
-        return movie.orElse(null);
+        return movieOrSerieRepository.findById(movieId).orElseThrow(
+                () -> new NullPointerException("There is no movie or serie with the id : " + movieId));
     }
 
     public MovieOrSerieModel createMovieOrSerie(MovieOrSerieModel movie){
         if(movie != null){
             movie = movieOrSerieRepository.save(movie);
-            return movie;
         }
-        return null;
+        return movie;
     }
 
-    public Boolean updateMovieOrSerie(MovieOrSerieModel movie){
-        if(movie != null && movie.getId() != null){
-            MovieOrSerieModel movieAux = getMovieOrSerieById(movie.getId());
-
-            return true;
-        }
-        return false;
+    @Transactional
+    public MovieOrSerieModel updateMovieOrSerie(MovieOrSerieModel movie){
+        var auxMovie =  getMovieOrSerieById(movie.getId());
+        if(movie.getTitle() != null){ auxMovie.setTitle(movie.getTitle());}
+        if(movie.getImage() != null) {auxMovie.setImage(movie.getImage());}
+        if(movie.getDate() != null) {auxMovie.setDate(movie.getDate());}
+        if(movie.getScore() > 0 && movie.getScore() < 6) {auxMovie.setScore(movie.getScore());}
+        if(movie.getGenre() != null){auxMovie.setGenre(movie.getGenre());}
+        if(!movie.getAssociatedCharacters().isEmpty()){auxMovie.setAssociatedCharacters(movie.getAssociatedCharacters());}
+        return auxMovie;
     }
 
     public boolean deleteById(Long id){
@@ -53,34 +60,27 @@ public class MovieOrSerieService {
         }
     }
 
-    public Boolean removeMovieOrSerieById(Long movieId) {
-        var movieAux = movieOrSerieRepository.findById(movieId);
-        var bool = movieAux.isPresent();
-        if(bool){
-            movieOrSerieRepository.deleteById(movieId);
-        }
-        return bool;
-    }
-
     //Punto 10
 
-    public ArrayList<MovieOrSerieModel> findByTitle(String title){
-        return movieOrSerieRepository.findByTitle(title);
+    public MovieOrSerieModel findByTitle(String title){
+        return movieOrSerieRepository.findByTitle(title).orElseThrow(
+                () -> new IllegalStateException("There is no movie or serie with the title : " + title)
+        );
     }
 
-    public ArrayList<MovieOrSerieModel> findByGenre(Long idGenre){
+    public ArrayList<MovieOrSerieModel> filterByGenre(Long idGenre){
         return movieOrSerieRepository.findByGenre_Id(idGenre);
     }
 
     @SneakyThrows
-    public ArrayList<MovieOrSerieModel> orderByAscOrDesc(String ascOrDesc) {
+    public ArrayList<MovieOrSerieModel> orderByDateAscOrDesc(String ascOrDesc) {
         var aux = new ArrayList<MovieOrSerieModel>();
         if( ascOrDesc.equalsIgnoreCase("ASC")){
-            aux = movieOrSerieRepository.findByOrderByIdAsc();
+            aux = movieOrSerieRepository.findByOrderByDateAsc();
         }else if(ascOrDesc.equalsIgnoreCase("DESC")){
-            aux = movieOrSerieRepository.findByOrderByIdDesc();
+            aux = movieOrSerieRepository.findByOrderByDateDesc();
         }else{
-            throw new Exception("Bad Argument: Only you can order by ASC or DESC.");
+            throw new IllegalArgumentException("Only you can order by ASC or DESC.");
         }
         return aux;
     }

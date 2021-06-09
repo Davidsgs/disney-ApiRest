@@ -1,15 +1,12 @@
 package com.alchemy.challange.disney.controllers;
 
 import com.alchemy.challange.disney.adapters.MovieOrSerieAdapter;
-import com.alchemy.challange.disney.models.CharactersModel;
 import com.alchemy.challange.disney.models.MovieOrSerieModel;
 import com.alchemy.challange.disney.services.MovieOrSerieService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.repository.query.Param;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
-import java.util.List;
 
 @RestController
 @RequestMapping(value = {"/movies"})
@@ -34,30 +31,31 @@ public class MovieOrSerieController {
     }
 
     @RequestMapping(value = "", method = RequestMethod.PUT)
-    public Boolean updateMovieOrSerie(@RequestBody MovieOrSerieModel movie) {
+    public MovieOrSerieModel updateMovieOrSerie(@RequestBody MovieOrSerieModel movie) {
         return movieOrSerieService.updateMovieOrSerie(movie);
     }
 
     @DeleteMapping(value = "/{movie_or_serie_id}")
-    public Boolean removeMovieOrSerieById(@PathVariable(name = "movie_or_serie_id") Long movieId) {
-        return movieOrSerieService.removeMovieOrSerieById(movieId);
+    public String removeMovieOrSerieById(@PathVariable(name = "movie_or_serie_id") Long movieId) {
+        return movieOrSerieService.deleteById(movieId)?"The movie with ID: " + movieId + " has been deleted"
+                :"The movie with ID: " + movieId + "doesn't exist";
     }
 
     //punto 10
 
     @RequestMapping(value = "", method = RequestMethod.GET, params = "title")
-    public ArrayList<MovieOrSerieModel> findMovieByTitle(String title){
+    public MovieOrSerieModel findMovieByTitle(String title){
         return movieOrSerieService.findByTitle(title);
     }
 
     @RequestMapping(value = "", method = RequestMethod.GET, params = "genre")
-    public ArrayList<MovieOrSerieModel> findMovieByGenre(@RequestParam("genre") Long idGenre){
-        return movieOrSerieService.findByGenre(idGenre);
+    public ArrayList<MovieOrSerieModel> findMovieByGenre(Long idGenre){
+        return movieOrSerieService.filterByGenre(idGenre);
     }
 
     @RequestMapping(value = "", method = RequestMethod.GET, params = "order")
-    public ArrayList<MovieOrSerieModel> orderByAscOrDesc(String order){
-        return movieOrSerieService.orderByAscOrDesc(order);
+    public ArrayList<MovieOrSerieModel> orderByDateAscOrDesc(String order){
+        return movieOrSerieService.orderByDateAscOrDesc(order);
     }
 
 
